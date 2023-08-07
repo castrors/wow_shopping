@@ -5,6 +5,7 @@ import 'package:wow_shopping/backend/backend.dart';
 import 'package:wow_shopping/models/product_item.dart';
 import 'package:wow_shopping/widgets/app_icon.dart';
 
+//TODO convert this using bloc
 @immutable
 class WishlistButton extends StatefulWidget {
   const WishlistButton({
@@ -32,6 +33,7 @@ class _WishlistButtonState extends State<WishlistButton> {
     return StreamBuilder<bool>(
       initialData: wishlistRepo.isInWishlist(widget.item),
       stream: wishlistRepo.streamIsInWishlist(widget.item),
+      // emit on each or emit for each
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         final value = snapshot.requireData;
         return IconButton(
