@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wow_shopping/app/assets.dart';
 import 'package:wow_shopping/app/theme.dart';
 import 'package:wow_shopping/backend/backend.dart';
+import 'package:wow_shopping/features/wishlist/bloc/wishlist_bloc.dart';
 import 'package:wow_shopping/models/product_item.dart';
 import 'package:wow_shopping/widgets/app_icon.dart';
 
-//TODO convert this using bloc
 @immutable
-class WishlistButton extends StatefulWidget {
+class WishlistButton extends StatelessWidget {
   const WishlistButton({
     super.key,
     required this.item,
@@ -16,33 +17,53 @@ class WishlistButton extends StatefulWidget {
   final ProductItem item;
 
   @override
-  State<WishlistButton> createState() => _WishlistButtonState();
+  Widget build(BuildContext context) {
+    // FIXME: I'm providing bloc in the main_dev.dart file already, and I notice
+    // that if I don't provide here again it doesn't work. Why?
+    return BlocProvider<WishlistBloc>(
+      create: (context) => WishlistBloc(repository: context.wishlistRepo)
+        ..add(WishlistFetchRequested()),
+      child: WishlistButtonView(item: item),
+    );
+  }
 }
 
-class _WishlistButtonState extends State<WishlistButton> {
-  void _onTogglePressed(bool value) {
+class WishlistButtonView extends StatelessWidget {
+  const WishlistButtonView({
+    super.key,
+    required this.item,
+  });
+
+  final ProductItem item;
+
+  void _onTogglePressed(BuildContext context, bool value) {
     if (value) {
-      wishlistRepo.addToWishlist(widget.item.id);
+      context.read<WishlistBloc>().add(WishlistItemAdded(item.id));
     } else {
-      wishlistRepo.removeToWishlist(widget.item.id);
+      context.read<WishlistBloc>().add(WishlistItemRemoved(item.id));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<bool>(
-      initialData: wishlistRepo.isInWishlist(widget.item),
-      stream: wishlistRepo.streamIsInWishlist(widget.item),
-      // emit on each or emit for each
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-        final value = snapshot.requireData;
+    return BlocBuilder<WishlistBloc, WishlistState>(
+      // buildWhen: (previous, current) => current is WishlistLoaded,
+      builder: (context, state) {
+        // FIXME: The first time running it the state is wrong. If it does
+        // have a wishlist in the list, it will show the empty heart for all.
+        final isWishlisted = switch (state) {
+          WishlistLoaded(products: final products) =>
+            products.any((p) => p.id == item.id),
+          _ => false,
+        };
+
         return IconButton(
-          onPressed: () => _onTogglePressed(!value),
+          onPressed: () => _onTogglePressed(context, !isWishlisted),
           icon: AppIcon(
-            iconAsset: value //
+            iconAsset: isWishlisted //
                 ? Assets.iconHeartFilled
                 : Assets.iconHeartEmpty,
-            color: value //
+            color: isWishlisted //
                 ? AppTheme.of(context).appColor
                 : const Color(0xFFD0D0D0),
           ),

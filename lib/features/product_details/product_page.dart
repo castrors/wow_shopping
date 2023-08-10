@@ -156,7 +156,8 @@ class _AppBarDelegate extends SliverPersistentHeaderDelegate {
   bool shouldRebuild(covariant _AppBarDelegate oldDelegate) => false;
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Material(
       child: Ink(
         decoration: const BoxDecoration(
@@ -312,10 +313,12 @@ class _SliverProductPhotoGallery extends StatefulWidget {
   final ProductItem item;
 
   @override
-  State<_SliverProductPhotoGallery> createState() => _SliverProductPhotoGalleryState();
+  State<_SliverProductPhotoGallery> createState() =>
+      _SliverProductPhotoGalleryState();
 }
 
-class _SliverProductPhotoGalleryState extends State<_SliverProductPhotoGallery> {
+class _SliverProductPhotoGalleryState
+    extends State<_SliverProductPhotoGallery> {
   late String _selectedPhoto;
 
   @override
@@ -505,7 +508,6 @@ class _SliverProductSizeSelector extends StatelessWidget {
 @immutable
 class _SliverProductInfoTileHeader extends StatelessWidget {
   const _SliverProductInfoTileHeader({
-    super.key,
     required this.section,
     required this.title,
   });
