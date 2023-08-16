@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:wow_shopping/app/theme.dart';
-import 'package:wow_shopping/models/category_item.dart';
-import 'package:wow_shopping/widgets/app_icon.dart';
-import 'package:wow_shopping/widgets/common.dart';
+import 'package:wow_shopping/features/products/models/category_item.dart';
+import 'package:wow_shopping/shared/widgets/app_icon.dart';
+import 'package:wow_shopping/shared/widgets/common.dart';
 
 @immutable
 class CategoryNavList extends StatelessWidget {

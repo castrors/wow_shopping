@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_command/flutter_command.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:watch_it/watch_it.dart';
 import 'package:wow_shopping/app/assets.dart';
-import 'package:wow_shopping/backend/backend.dart';
 import 'package:wow_shopping/features/home/widgets/promo_carousel.dart';
 import 'package:wow_shopping/features/main/main_screen.dart';
-import 'package:wow_shopping/models/product_item.dart';
-import 'package:wow_shopping/widgets/app_icon.dart';
-import 'package:wow_shopping/widgets/category_nav_list.dart';
-import 'package:wow_shopping/widgets/common.dart';
-import 'package:wow_shopping/widgets/content_heading.dart';
-import 'package:wow_shopping/widgets/product_card.dart';
-import 'package:wow_shopping/widgets/top_nav_bar.dart';
+import 'package:wow_shopping/features/products/models/product_manager.dart';
+import 'package:wow_shopping/features/products/models/product_proxy.dart';
+import 'package:wow_shopping/shared/widgets/app_icon.dart';
+import 'package:wow_shopping/shared/widgets/category_nav_list.dart';
+import 'package:wow_shopping/shared/widgets/common.dart';
+import 'package:wow_shopping/shared/widgets/content_heading.dart';
+import 'package:wow_shopping/features/products/widgets/product_card.dart';
+import 'package:wow_shopping/shared/widgets/top_nav_bar.dart';
 
 @immutable
 class HomePage extends StatefulWidget {
@@ -97,27 +99,24 @@ class SliverTopSelling extends StatefulWidget {
 }
 
 class _SliverTopSellingState extends State<SliverTopSelling> {
-  late Future<List<ProductItem>> _futureTopSelling;
-
   @override
   void initState() {
     super.initState();
-    _futureTopSelling = productsRepo.fetchTopSelling();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<ProductItem>>(
-      future: _futureTopSelling,
-      builder: (BuildContext context, AsyncSnapshot<List<ProductItem>> snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
+    return ValueListenableBuilder<CommandResult<void, List<ProductProxy>>>(
+      valueListenable: di<ProductManager>().updateProductsCommand.results,
+      builder: (BuildContext context, result, _) {
+        if (result.isExecuting) {
           return const SliverFillRemaining(
             child: Center(
               child: CircularProgressIndicator(),
             ),
           );
         } else {
-          final data = snapshot.requireData;
+          final data = result.data!;
           return SliverToBoxAdapter(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,

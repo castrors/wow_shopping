@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:wow_shopping/app/assets.dart';
-import 'package:wow_shopping/widgets/app_icon.dart';
-import 'package:wow_shopping/widgets/common.dart';
+import 'package:wow_shopping/shared/widgets/app_icon.dart';
+import 'package:wow_shopping/shared/widgets/common.dart';
 
 class SliverExpansionTileController extends ChangeNotifier {
   SliverExpansionTileController(List<String>? expandedSections) {
@@ -45,7 +45,8 @@ class SliverExpansionTileHost extends StatefulWidget {
   final Widget child;
 
   @override
-  State<SliverExpansionTileHost> createState() => _SliverExpansionTileHostState();
+  State<SliverExpansionTileHost> createState() =>
+      _SliverExpansionTileHostState();
 }
 
 class _SliverExpansionTileHostState extends State<SliverExpansionTileHost> {
@@ -91,20 +92,25 @@ class _InheritedSliverExpansionTile extends InheritedModel<String> {
   final SliverExpansionTileController controller;
   final Set<String> sections;
 
-  static SliverExpansionTileController of(BuildContext context, String section) {
-    return InheritedModel.inheritFrom<_InheritedSliverExpansionTile>(context, aspect: section)!
+  static SliverExpansionTileController of(
+      BuildContext context, String section) {
+    return InheritedModel.inheritFrom<_InheritedSliverExpansionTile>(context,
+            aspect: section)!
         .controller;
   }
 
   @override
   bool updateShouldNotify(covariant _InheritedSliverExpansionTile oldWidget) {
-    return (controller != oldWidget.controller || sections.length != oldWidget.sections.length);
+    return (controller != oldWidget.controller ||
+        sections.length != oldWidget.sections.length);
   }
 
   @override
   bool updateShouldNotifyDependent(
-      covariant _InheritedSliverExpansionTile oldWidget, Set<String> dependencies) {
-    return (sections.containsAll(dependencies) != oldWidget.sections.containsAll(dependencies));
+      covariant _InheritedSliverExpansionTile oldWidget,
+      Set<String> dependencies) {
+    return (sections.containsAll(dependencies) !=
+        oldWidget.sections.containsAll(dependencies));
   }
 }
 
@@ -117,7 +123,8 @@ class SliverExpansionTileHeader extends StatelessWidget {
   });
 
   final String section;
-  final Widget Function(BuildContext context, String section, bool expanded) builder;
+  final Widget Function(BuildContext context, String section, bool expanded)
+      builder;
 
   @override
   Widget build(BuildContext context) {
@@ -169,7 +176,8 @@ class SliverExpansionTileContent extends StatefulWidget {
   final WidgetBuilder sliverBuilder;
 
   @override
-  State<SliverExpansionTileContent> createState() => _SliverExpansionTileContentState();
+  State<SliverExpansionTileContent> createState() =>
+      _SliverExpansionTileContentState();
 }
 
 class _SliverExpansionTileContentState extends State<SliverExpansionTileContent>
@@ -290,16 +298,18 @@ class _RenderSliverExpansionTileContent extends RenderProxySliver {
     child!.layout(constraints, parentUsesSize: true);
     final childGeometry = child!.geometry!;
     final childExtent = childGeometry.maxPaintExtent * animation.value;
-    final paintedChildSize = calculatePaintOffset(constraints, from: 0.0, to: childExtent);
-    final cacheExtent = calculateCacheOffset(constraints, from: 0.0, to: childExtent);
+    final paintedChildSize =
+        calculatePaintOffset(constraints, from: 0.0, to: childExtent);
+    final cacheExtent =
+        calculateCacheOffset(constraints, from: 0.0, to: childExtent);
     geometry = SliverGeometry(
       scrollExtent: childExtent,
       paintExtent: paintedChildSize,
       cacheExtent: cacheExtent,
       maxPaintExtent: childExtent,
       hitTestExtent: paintedChildSize,
-      hasVisualOverflow:
-          childExtent > constraints.remainingPaintExtent || constraints.scrollOffset > 0.0,
+      hasVisualOverflow: childExtent > constraints.remainingPaintExtent ||
+          constraints.scrollOffset > 0.0,
     );
   }
 

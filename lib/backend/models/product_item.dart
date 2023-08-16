@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:wow_shopping/utils/formatting.dart';
+import 'package:wow_shopping/shared/utils/formatting.dart';
 
 part 'product_item.g.dart';
 

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:wow_shopping/app/assets.dart';
-import 'package:wow_shopping/widgets/app_icon.dart';
-import 'package:wow_shopping/widgets/category_nav_list.dart';
-import 'package:wow_shopping/widgets/common.dart';
-import 'package:wow_shopping/widgets/sliver_expansion_tile.dart';
-import 'package:wow_shopping/widgets/top_nav_bar.dart';
+import 'package:wow_shopping/shared/widgets/app_icon.dart';
+import 'package:wow_shopping/shared/widgets/category_nav_list.dart';
+import 'package:wow_shopping/shared/widgets/common.dart';
+import 'package:wow_shopping/shared/widgets/sliver_expansion_tile.dart';
+import 'package:wow_shopping/shared/widgets/top_nav_bar.dart';
 
 @immutable
 class CategoriesPage extends StatefulWidget {
