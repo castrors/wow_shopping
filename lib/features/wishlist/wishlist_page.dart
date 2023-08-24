@@ -18,9 +18,6 @@ class WishlistPage extends ConsumerStatefulWidget {
 }
 
 class _WishlistPageState extends ConsumerState<WishlistPage> {
-  // var _wishlistItems = <ProductItem>[];
-  // final _selectedItems = <String>{};
-
   @override
   Widget build(BuildContext context) {
     final selectedItems = ref.watch(selectItemsProvider);
@@ -119,26 +116,3 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
     );
   }
 }
-
-// @immutable
-// class WishlistConsumer extends ConsumerWidget {
-//   const WishlistConsumer({
-//     super.key,
-//     required this.builder,
-//   });
-
-//   final Widget Function(BuildContext context, List<ProductItem> wishlist)
-//       builder;
-
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     return StreamBuilder<List<ProductItem>>(
-//       initialData: ref.read(wishlistRepoProvider).currentWishlistItems,
-//       stream: ref.read(wishlistRepoProvider).streamWishlistItems,
-//       builder:
-//           (BuildContext context, AsyncSnapshot<List<ProductItem>> snapshot) {
-//         return builder(context, snapshot.requireData);
-//       },
-//     );
-//   }
-// }

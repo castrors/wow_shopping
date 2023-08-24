@@ -9,6 +9,12 @@ final productsRepoProvider = Provider<ProductsRepo>((ref) {
   return ProductsRepo();
 });
 
+final productsTopSellingProvider =
+    FutureProvider<List<ProductItem>>((ref) async {
+  final repo = ref.read(productsRepoProvider);
+  return repo.fetchTopSelling();
+});
+
 class ProductsRepo {
   ProductsRepo();
 
